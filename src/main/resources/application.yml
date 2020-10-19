@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+logging:
+  pattern:
+    console: "%-30(%d{yyyy-MM-dd HH:mm:ss}) - %msg%n"
+  level:
+    root: info
+    #    org.springframework.orm.jpa: DEBUG #show transactions
+    #    org.springframework.jdbc.core: TRACE # jdbctemplate
+    jdbc:
+      org.hibernate.type: info
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  application:
+    name: control-transactional
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        generate_statistics: false
+        order_inserts: true
+        order_updates: true
+        jdbc:
+          batch_size: 25
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+  jmx:
+    enabled: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/transactional?reWriteBatchedInserts=true
+    username: postgres
+    password: postgres
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 15
+      data-source-properties:
+        reWriteBatchedInserts: true
